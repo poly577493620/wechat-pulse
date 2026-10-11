@@ -47,7 +47,7 @@ Cookie 等同登录凭据，只能通过本机管理中心安全录入。不要�
 五、修改每日推送时间
 ------------------
 
-1. 双击 open-config.cmd。
+1. 双击 `scripts\windows\open-config.cmd`。
 2. 修改 .env 中的时间，例如每天北京时间 09:30：
 
    TZ=Asia/Shanghai
@@ -63,7 +63,7 @@ DIGEST_HOUR 可填写 0～23，DIGEST_MINUTE 可填写 0～59。
 六、接入 Codex 定时汇总（可选）
 ----------------------------
 
-如果使用 Codex 桌面端，请打开 CODEX_AUTOMATION.zh-CN.md，替换项目路径、首次运行时间和重试间隔，再把完整模板发送给 Codex。
+如果使用 Codex 桌面端，请打开 [CODEX_AUTOMATION.zh-CN.md](CODEX_AUTOMATION.zh-CN.md)，替换项目路径、首次运行时间和重试间隔，再把完整模板发送给 Codex。
 
 不要把 Cookie、ADMIN_TOKEN、邮箱密码或 Webhook 粘贴到聊天中。Codex 模板会要求自动化只在本机安全读取所需配置，并通过状态文件避免重复发送。
 
@@ -81,12 +81,12 @@ DIGEST_HOUR 可填写 0～23，DIGEST_MINUTE 可填写 0～59。
 八、常用入口
 ------------
 
-- 启动或打开管理中心：start-wepulse.cmd
-- 停止后台服务：stop-wepulse.cmd
-- 重启服务：restart-wepulse.cmd
-- 修改时间和通知配置：open-config.cmd
-- 安装登录自启动：install-autostart.cmd
-- 取消登录自启动：remove-autostart.cmd
+- 启动或打开管理中心：`start-wepulse.cmd`
+- 停止后台服务：`stop-wepulse.cmd`
+- 重启服务：`restart-wepulse.cmd`
+- 修改时间和通知配置：`scripts\windows\open-config.cmd`
+- 安装登录自启动：`scripts\windows\install-autostart.cmd`
+- 取消登录自启动：`scripts\windows\remove-autostart.cmd`
 - 管理中心：http://localhost:8765/admin
 
 restart 完成后自动打开网页是正常现象。
@@ -94,9 +94,9 @@ restart 完成后自动打开网页是正常现象。
 九、需要帮助时
 --------------
 
-- 完整说明：README.md
-- Codex 定时汇总模板：CODEX_AUTOMATION.zh-CN.md
-- 乱码、权限、401、Cookie 400 和定时任务：TROUBLESHOOTING.zh-CN.md
-- 开源发布和脱敏检查：OPEN_SOURCE_RELEASE.zh-CN.md
+- 完整说明：[README.md](../README.md)
+- Codex 定时汇总模板：[CODEX_AUTOMATION.zh-CN.md](CODEX_AUTOMATION.zh-CN.md)
+- 乱码、权限、401、Cookie 400 和定时任务：[TROUBLESHOOTING.zh-CN.md](TROUBLESHOOTING.zh-CN.md)
+- 开源发布和脱敏检查：[OPEN_SOURCE_RELEASE.zh-CN.md](maintainers/OPEN_SOURCE_RELEASE.zh-CN.md)
 
 禁止把 .env、data、Cookie、管理令牌、数据库和日志打包上传。

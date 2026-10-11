@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- Reorganized supplementary documentation under `docs/` and implementation scripts under `scripts/`, while preserving the three root-level Windows start, stop, and restart entry points.
 - Added a copy-ready Codex automation guide for daily WePulse summaries, state-based deduplication, credential-safe local API access, and bounded failure retries.
 - Added a dedicated Chinese troubleshooting guide covering PowerShell encoding, folder permissions, stale management tokens, WeRead Cookie selection, HTTP 400 responses, background startup, notification tests, and missed schedules.
 - Added an open-source release checklist to prevent publishing credentials, local databases, logs, virtual environments, or personal paths.

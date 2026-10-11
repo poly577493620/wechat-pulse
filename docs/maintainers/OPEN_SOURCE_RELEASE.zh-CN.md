@@ -19,6 +19,8 @@
 .github/
 src/
 tests/
+docs/
+scripts/
 .env.example
 .gitignore
 .dockerignore
@@ -27,13 +29,13 @@ docker-compose.yml
 pyproject.toml
 uv.lock
 README.md
-QUICKSTART.zh-CN.txt
-TROUBLESHOOTING.zh-CN.md
 CONTRIBUTING.md
 SECURITY.md
 CHANGELOG.md
 LICENSE
-Windows / Linux 启停脚本
+start-wepulse.cmd
+stop-wepulse.cmd
+restart-wepulse.cmd
 ```
 
 `.env.example` 只能包含占位值，不应包含可用账号或 Cookie。

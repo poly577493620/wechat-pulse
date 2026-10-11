@@ -130,7 +130,7 @@ HTTP 400 表示上游接口拒绝了当前请求，不等同于 WePulse 页面�
 
 可选方案：
 
-1. 安装 `install-autostart.cmd`，并确保电脑已经登录 Windows。
+1. 运行 `scripts\windows\install-autostart.cmd`，并确保电脑已经登录 Windows。
 2. 网络恢复后在管理中心点击“立即采集全部”和“测试每日推送”。
 3. 使用 Codex、Windows 任务计划程序或其他外部调度器每 30 分钟检查一次，只在全部订阅成功后标记当日完成。
 
@@ -144,4 +144,4 @@ Windows 本地一键启动不需要 Docker，也不需要 WSL。只有选择 Doc
 
 可以提供：WePulse 版本、Windows 版本、启动方式、错误发生的按钮、HTTP 状态码、经过脱敏的错误文字，以及问题是否影响全部订阅。
 
-禁止提供：`.env`、完整 Cookie、管理令牌、邮件密码、Webhook 地址、数据库、含个人目录的完整日志。安全问题请按 [SECURITY.md](SECURITY.md) 私下报告。
+禁止提供：`.env`、完整 Cookie、管理令牌、邮件密码、Webhook 地址、数据库、含个人目录的完整日志。安全问题请按 [SECURITY.md](../SECURITY.md) 私下报告。

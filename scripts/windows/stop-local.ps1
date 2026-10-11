@@ -1,6 +1,7 @@
 ﻿$ErrorActionPreference = "Stop"
-Set-Location -LiteralPath $PSScriptRoot
-$pidPath = Join-Path $PSScriptRoot "data\wepulse.pid"
+$ProjectRoot = [IO.Path]::GetFullPath((Join-Path $PSScriptRoot "..\.."))
+Set-Location -LiteralPath $ProjectRoot
+$pidPath = Join-Path $ProjectRoot "data\wepulse.pid"
 if (-not (Test-Path -LiteralPath $pidPath)) {
     Write-Host "未找到运行记录；WePulse 可能已经停止。" -ForegroundColor Yellow
     exit 0
@@ -12,7 +13,7 @@ if (-not $process) {
     Write-Host "WePulse 已经停止。" -ForegroundColor Yellow
     exit 0
 }
-$expected = [IO.Path]::GetFullPath((Join-Path $PSScriptRoot ".venv\Scripts\pythonw.exe"))
+$expected = [IO.Path]::GetFullPath((Join-Path $ProjectRoot ".venv\Scripts\pythonw.exe"))
 try { $actual = [IO.Path]::GetFullPath($process.Path) } catch { $actual = "" }
 if ($actual -ne $expected) {
     throw "PID $servicePid 不属于当前项目，为安全起见未终止该进程。"

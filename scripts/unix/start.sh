@@ -1,6 +1,8 @@
 #!/usr/bin/env sh
 set -eu
-cd "$(dirname "$0")"
+script_dir="$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)"
+project_root="$(CDPATH= cd -- "$script_dir/../.." && pwd)"
+cd "$project_root"
 
 if ! command -v docker >/dev/null 2>&1; then
   echo "未找到 Docker，请先安装并启动 Docker Desktop 或 Docker Engine。" >&2

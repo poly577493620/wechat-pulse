@@ -119,18 +119,24 @@ def test_windows_local_entrypoints_are_shipped():
     root = Path(__file__).resolve().parents[1]
     expected = [
         "start-wepulse.cmd",
-        "start-local.ps1",
         "stop-wepulse.cmd",
-        "stop-local.ps1",
         "restart-wepulse.cmd",
-        "open-config.cmd",
-        "install-autostart.cmd",
-        "install-autostart.ps1",
-        "remove-autostart.cmd",
-        "remove-autostart.ps1",
+        "scripts/windows/start-local.ps1",
+        "scripts/windows/stop-local.ps1",
+        "scripts/windows/open-config.cmd",
+        "scripts/windows/install-autostart.cmd",
+        "scripts/windows/install-autostart.ps1",
+        "scripts/windows/remove-autostart.cmd",
+        "scripts/windows/remove-autostart.ps1",
+        "scripts/windows/start-docker.cmd",
+        "scripts/windows/start.ps1",
+        "scripts/unix/start.sh",
     ]
     assert all((root / name).is_file() for name in expected)
-    assert "start-local.ps1" in (root / "start-wepulse.cmd").read_text(encoding="utf-8")
+    assert "scripts\\windows\\start-local.ps1" in (root / "start-wepulse.cmd").read_text(encoding="utf-8")
+    assert 'Join-Path $PSScriptRoot "..\\.."' in (
+        root / "scripts/windows/start-local.ps1"
+    ).read_text(encoding="utf-8-sig")
 
 
 def test_parse_public_article_metadata():

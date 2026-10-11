@@ -8,11 +8,11 @@ WePulse 是一个自托管的微信公众号更新监测服务。用户提交任
 
 | 文档 | 适合谁 | 内容 |
 |---|---|---|
-| [QUICKSTART.zh-CN.txt](QUICKSTART.zh-CN.txt) | 第一次使用的 Windows 用户 | 最短安装、启动和 Cookie 接入流程 |
+| [docs/QUICKSTART.zh-CN.md](docs/QUICKSTART.zh-CN.md) | 第一次使用的 Windows 用户 | 最短安装、启动和 Cookie 接入流程 |
 | [README.md](README.md) | 所有用户 | 完整功能、部署、配置、API、备份和升级说明 |
-| [CODEX_AUTOMATION.zh-CN.md](CODEX_AUTOMATION.zh-CN.md) | 使用 Codex 的用户 | 一键创建每日汇总与失败重试自动化的指令模板 |
-| [TROUBLESHOOTING.zh-CN.md](TROUBLESHOOTING.zh-CN.md) | 启动或采集遇到问题的用户 | 乱码、权限、令牌、Cookie、400/401、端口和定时任务排查 |
-| [OPEN_SOURCE_RELEASE.zh-CN.md](OPEN_SOURCE_RELEASE.zh-CN.md) | 准备发布源码的维护者 | 去除个人信息、凭据检查、打包和发布前验收清单 |
+| [docs/CODEX_AUTOMATION.zh-CN.md](docs/CODEX_AUTOMATION.zh-CN.md) | 使用 Codex 的用户 | 一键创建每日汇总与失败重试自动化的指令模板 |
+| [docs/TROUBLESHOOTING.zh-CN.md](docs/TROUBLESHOOTING.zh-CN.md) | 启动或采集遇到问题的用户 | 乱码、权限、令牌、Cookie、400/401、端口和定时任务排查 |
+| [docs/maintainers/OPEN_SOURCE_RELEASE.zh-CN.md](docs/maintainers/OPEN_SOURCE_RELEASE.zh-CN.md) | 准备发布源码的维护者 | 去除个人信息、凭据检查、打包和发布前验收清单 |
 | [CONTRIBUTING.md](CONTRIBUTING.md) | 贡献者 | 开发、测试和提交要求 |
 
 ## 2. 第一次使用：按这 6 步完成
@@ -120,11 +120,11 @@ Windows 一键启动会把管理令牌复制到剪贴板。第一次打开管理
 
 ## 8. 修改每日推送时间
 
-每日摘要时间由项目目录中的 `.env` 控制。目前管理网页会显示时间，但不能直接修改；Windows 用户可双击 `open-config.cmd` 打开配置。
+每日摘要时间由项目目录中的 `.env` 控制。目前管理网页会显示时间，但不能直接修改；Windows 用户可双击 `scripts\windows\open-config.cmd` 打开配置。
 
 ### 8.1 操作步骤
 
-1. 双击 `open-config.cmd`。
+1. 双击 `scripts\windows\open-config.cmd`。
 2. 找到以下三项：
 
    ```env
@@ -184,7 +184,7 @@ COLLECT_INTERVAL_MINUTES=60
 
 1. 先正常启动 WePulse，并确认管理中心能够“立即采集全部”。
 2. 打开一个 Codex 聊天。
-3. 打开 [CODEX_AUTOMATION.zh-CN.md](CODEX_AUTOMATION.zh-CN.md)。
+3. 打开 [docs/CODEX_AUTOMATION.zh-CN.md](docs/CODEX_AUTOMATION.zh-CN.md)。
 4. 把模板中的项目路径、首次运行时间和重试间隔替换成自己的设置。
 5. 将完整模板发送给 Codex，并允许它读取 WePulse 项目及写入一个持久状态文件。
 6. 检查 Codex 创建的自动化名称、时间和时区是否正确。
@@ -223,20 +223,20 @@ start-wepulse.cmd
 stop-wepulse.cmd
 ```
 
-Cookie 直接在管理中心录入并立即生效；邮件、Webhook 等高级配置仍可通过 `open-config.cmd` 修改，随后双击 `restart-wepulse.cmd`。项目根目录还提供纯文本快速指南 `QUICKSTART.zh-CN.txt`。
+Cookie 直接在管理中心录入并立即生效；邮件、Webhook 等高级配置可通过 `scripts\windows\open-config.cmd` 修改，随后双击根目录的 `restart-wepulse.cmd`。快速指南位于 `docs\QUICKSTART.zh-CN.md`。
 
 双击 `restart-wepulse.cmd` 后自动重新打开管理网页是正常行为，表示脚本已经先停止旧进程再启动新进程。网页本身不是后台服务，关掉它不影响 WePulse。
 
 需要登录 Windows 后自动运行时，先完成一次启动，再双击：
 
 ```text
-install-autostart.cmd
+scripts\windows\install-autostart.cmd
 ```
 
 取消开机自启动，双击：
 
 ```text
-remove-autostart.cmd
+scripts\windows\remove-autostart.cmd
 ```
 
 本地数据、运行日志和 PID 文件均保存在项目的 `data/` 目录。建议将整个项目解压到长期不移动的位置，例如 `D:\WePulse` 或 `F:\WePulse`。
@@ -246,14 +246,14 @@ remove-autostart.cmd
 需要先安装并启动 Docker Desktop 或 Docker Engine。Windows 用户双击：
 
 ```text
-start-docker.cmd
+scripts\windows\start-docker.cmd
 ```
 
 Linux 或 macOS：
 
 ```bash
-chmod +x start.sh
-./start.sh
+chmod +x scripts/unix/start.sh
+./scripts/unix/start.sh
 ```
 
 停止 Docker 服务：
@@ -540,7 +540,7 @@ uv run pytest -q
 
 ## 18. 常见问题
 
-更完整、按症状分类的处理步骤见 [TROUBLESHOOTING.zh-CN.md](TROUBLESHOOTING.zh-CN.md)。下面只保留最常见情况。
+更完整、按症状分类的处理步骤见 [docs/TROUBLESHOOTING.zh-CN.md](docs/TROUBLESHOOTING.zh-CN.md)。下面只保留最常见情况。
 
 ### 18.1 返回 `401 LOGIN ERR`
 
@@ -588,7 +588,7 @@ docker compose restart
 
 ### 18.8 开机自启动没有运行
 
-打开 Windows“任务计划程序”，检查名为 `WePulse` 的任务。该任务在当前用户登录后启动，因此电脑必须开机并完成用户登录，06:00 定时摘要才能执行。项目目录不能在安装任务后移动；如果已经移动，请先运行 `remove-autostart.cmd`，再在新目录运行 `install-autostart.cmd`。
+打开 Windows“任务计划程序”，检查名为 `WePulse` 的任务。该任务在当前用户登录后启动，因此电脑必须开机并完成用户登录，06:00 定时摘要才能执行。项目目录不能在安装任务后移动；如果已经移动，请先运行 `scripts\windows\remove-autostart.cmd`，再在新目录运行 `scripts\windows\install-autostart.cmd`。
 
 ### 18.9 订阅成功但没有新文章
 
@@ -617,13 +617,12 @@ src/wepulse/
   service.py             采集编排
   collectors/            可替换采集器
 tests/                    核心测试
+docs/                     快速指南、故障排查和 Codex 自动化说明
+scripts/windows/           Windows 配置、Docker 和自启动脚本
+scripts/unix/              Linux/macOS Docker 启动脚本
 start-wepulse.cmd         Windows 本地一键启动
 stop-wepulse.cmd          Windows 本地停止
 restart-wepulse.cmd       Windows 本地重启
-open-config.cmd           用记事本打开配置
-install-autostart.cmd     安装登录自启动任务
-remove-autostart.cmd      移除登录自启动任务
-start-docker.cmd          Windows Docker 启动（可选）
 ```
 
 ## 20. 贡献

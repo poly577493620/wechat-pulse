@@ -6,17 +6,18 @@
 )
 
 $ErrorActionPreference = "Stop"
-Set-Location -LiteralPath $PSScriptRoot
-$env:UV_CACHE_DIR = Join-Path $PSScriptRoot ".uv-cache"
-$env:UV_PYTHON_INSTALL_DIR = Join-Path $PSScriptRoot ".python"
+$ProjectRoot = [IO.Path]::GetFullPath((Join-Path $PSScriptRoot "..\.."))
+Set-Location -LiteralPath $ProjectRoot
+$env:UV_CACHE_DIR = Join-Path $ProjectRoot ".uv-cache"
+$env:UV_PYTHON_INSTALL_DIR = Join-Path $ProjectRoot ".python"
 
 function Assert-ProjectWritable {
-    $probe = Join-Path $PSScriptRoot (".wepulse-write-test-" + [guid]::NewGuid().ToString("N") + ".tmp")
+    $probe = Join-Path $ProjectRoot (".wepulse-write-test-" + [guid]::NewGuid().ToString("N") + ".tmp")
     try {
         [IO.File]::WriteAllText($probe, "write-test", [Text.UTF8Encoding]::new($false))
         Remove-Item -LiteralPath $probe -Force
     } catch {
-        throw "当前账户没有项目目录的写入权限：$PSScriptRoot`n请右键该文件夹，选择 属性 → 安全 → 编辑，为当前账户勾选 修改；或者把项目解压到当前账户拥有写入权限的目录。不要长期以管理员身份运行 WePulse。"
+        throw "当前账户没有项目目录的写入权限：$ProjectRoot`n请右键该文件夹，选择 属性 → 安全 → 编辑，为当前账户勾选 修改；或者把项目解压到当前账户拥有写入权限的目录。不要长期以管理员身份运行 WePulse。"
     }
 }
 
@@ -55,9 +56,9 @@ function Ensure-Uv {
 }
 
 function Ensure-EnvironmentFile {
-    $envPath = Join-Path $PSScriptRoot ".env"
+    $envPath = Join-Path $ProjectRoot ".env"
     if (-not (Test-Path -LiteralPath $envPath)) {
-        Copy-Item -LiteralPath (Join-Path $PSScriptRoot ".env.example") -Destination $envPath
+        Copy-Item -LiteralPath (Join-Path $ProjectRoot ".env.example") -Destination $envPath
         $token = [guid]::NewGuid().ToString("N") + [guid]::NewGuid().ToString("N")
         $content = [IO.File]::ReadAllText($envPath)
         $content = $content.Replace("ADMIN_TOKEN=change-me", "ADMIN_TOKEN=$token")
@@ -90,11 +91,11 @@ if ($SetupOnly) {
 }
 
 if (-not (Test-WePulseHealth)) {
-    $pythonw = Join-Path $PSScriptRoot ".venv\Scripts\pythonw.exe"
+    $pythonw = Join-Path $ProjectRoot ".venv\Scripts\pythonw.exe"
     if (-not (Test-Path -LiteralPath $pythonw)) { throw "未找到本地 Python：$pythonw" }
-    $dataDir = Join-Path $PSScriptRoot "data"
+    $dataDir = Join-Path $ProjectRoot "data"
     New-Item -ItemType Directory -Path $dataDir -Force | Out-Null
-    $process = Start-Process -FilePath $pythonw -ArgumentList "-m", "wepulse" -WorkingDirectory $PSScriptRoot -WindowStyle Hidden -PassThru -RedirectStandardOutput (Join-Path $dataDir "service.out.log") -RedirectStandardError (Join-Path $dataDir "service.err.log")
+    $process = Start-Process -FilePath $pythonw -ArgumentList "-m", "wepulse" -WorkingDirectory $ProjectRoot -WindowStyle Hidden -PassThru -RedirectStandardOutput (Join-Path $dataDir "service.out.log") -RedirectStandardError (Join-Path $dataDir "service.err.log")
     [IO.File]::WriteAllText((Join-Path $dataDir "wepulse.pid"), [string]$process.Id)
     $ready = $false
     for ($attempt = 0; $attempt -lt 30; $attempt++) {
