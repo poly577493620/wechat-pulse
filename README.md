@@ -191,7 +191,11 @@ COLLECT_INTERVAL_MINUTES=60
 
 不要在指令中填写 Cookie、`ADMIN_TOKEN`、邮箱密码或 Webhook。模板要求 Codex仅在本机安全读取所需令牌，并禁止在消息或日志中输出凭据。
 
-## 9. 方法一：Windows 本地一键启动（推荐）
+## 9. 安装与启动
+
+根据操作系统和使用习惯选择下面一种方式即可。普通 Windows 用户优先选择方法一；已经安装 Docker 的用户可以选择方法二。方法三和方法四主要面向需要自行维护运行环境的用户或开发者。
+
+### 9.1 方法一：Windows 本地一键启动（推荐）
 
 要求：Windows 10/11、网络连接，以及系统自带的 WinGet。不需要 Docker、WSL，也不需要预先安装 Python。
 
@@ -237,7 +241,7 @@ remove-autostart.cmd
 
 本地数据、运行日志和 PID 文件均保存在项目的 `data/` 目录。建议将整个项目解压到长期不移动的位置，例如 `D:\WePulse` 或 `F:\WePulse`。
 
-## 10. 方法二：Docker 一键启动（可选）
+### 9.2 方法二：Docker 一键启动（可选）
 
 需要先安装并启动 Docker Desktop 或 Docker Engine。Windows 用户双击：
 
@@ -260,7 +264,7 @@ docker compose down
 
 这不会删除 `data/` 中的订阅和历史记录。
 
-## 11. 方法三：手工 Docker 部署
+### 9.3 方法三：手工 Docker 部署
 
 需要 Docker Desktop、Docker Engine 或兼容的 Compose 环境。
 
@@ -285,7 +289,7 @@ docker compose up -d --build
 - 交互式接口文档：`http://localhost:8765/docs`
 - 聚合 RSS：`http://localhost:8765/feeds/all.xml`
 
-## 12. 方法四：手工本地运行
+### 9.4 方法四：手工本地运行
 
 适合开发者。安装 [uv](https://docs.astral.sh/uv/) 后执行：
 
@@ -295,7 +299,15 @@ uv sync --locked
 uv run python -m wepulse
 ```
 
-## 13. 管理中心使用方法
+Linux 或 macOS 手工运行：
+
+```bash
+cp .env.example .env
+uv sync --locked
+uv run python -m wepulse
+```
+
+## 10. 管理中心使用方法
 
 1. 打开 `http://localhost:8765/admin`。
 2. 从 `.env` 复制 `ADMIN_TOKEN`，在“登录”区域保存。
@@ -305,7 +317,7 @@ uv run python -m wepulse
 6. 在“订阅与失败提示”查看最后检查时间和具体错误；错误消失表示下一次采集已经恢复。
 7. 配置邮件或企业微信后，点击“测试每日推送”验证渠道。
 
-### 13.1 管理中心按钮分别做什么
+### 10.1 管理中心按钮分别做什么
 
 | 按钮 | 实际动作 | 正常结果 |
 |---|---|---|
@@ -319,17 +331,9 @@ uv run python -m wepulse
 
 删除订阅会同时删除它的历史文章且不可撤销，管理中心会在操作前再次确认。
 
-Linux 或 macOS 手工运行：
+## 11. 首次配置
 
-```bash
-cp .env.example .env
-uv sync --locked
-uv run python -m wepulse
-```
-
-## 14. 首次配置
-
-### 14.1 设置管理令牌
+### 11.1 设置管理令牌
 
 编辑 `.env`，将：
 
@@ -351,7 +355,7 @@ Authorization: Bearer <ADMIN_TOKEN>
 
 不要把 `.env` 提交到 Git。项目已经通过 `.gitignore` 和 `.dockerignore` 排除它。
 
-### 14.2 配置微信读书登录
+### 11.2 配置微信读书登录
 
 监测任意公众号需要用户自己的微信读书 Web 登录状态：
 
@@ -363,13 +367,13 @@ Authorization: Bearer <ADMIN_TOKEN>
 
 然后进入管理中心点击“检查 Cookie”。检查会使用第一个微信读书订阅执行一次真实请求：显示“验证成功”才表示当前登录状态可以采集。Cookie 过期后，管理首页会显示“可能已失效”，对应公众号也会保留具体错误。
 
-## 15. 每日通知
+## 12. 每日通知
 
 每天北京时间 06:00，WePulse 会先采集全部订阅，再生成过去 24 小时摘要，然后发送到已配置的渠道。摘要中同时包含公众号名称、文章标题、原文链接和采集失败提示。
 
 服务必须在 06:00 时处于运行状态，电脑也必须能够联网。当前内置定时器不会为错过的每日推送无限补发；恢复网络后，普通采集会按 `COLLECT_INTERVAL_MINUTES` 继续，但当日摘要需要在管理中心手动测试推送，或由外部任务调度器实现“每 30 分钟重试直到成功”。若使用 Codex、Windows 任务计划程序或其他调度器做补偿重试，应以“全部订阅无错误且通知渠道返回成功”为完成条件，避免把采集失败记录成成功。
 
-### 15.1 企业微信机器人
+### 12.1 企业微信机器人
 
 在企业微信群中添加“群机器人”，复制 Webhook 地址并写入：
 
@@ -377,7 +381,7 @@ Authorization: Bearer <ADMIN_TOKEN>
 WECOM_WEBHOOK_URL=https://qyapi.weixin.qq.com/cgi-bin/webhook/send?key=...
 ```
 
-### 15.2 邮件
+### 12.2 邮件
 
 填写 SMTP 信息。例如使用启用 STARTTLS 的邮箱服务：
 
@@ -393,7 +397,7 @@ EMAIL_TO=receiver@example.com
 
 多个收件人暂不支持；`SMTP_PASSWORD` 应使用邮箱服务商提供的应用专用密码，而不是公开在代码中。修改 `.env` 后重启服务，再到管理中心点击“测试每日推送”。
 
-### 15.3 通用 Webhook
+### 12.3 通用 Webhook
 
 设置 `DIGEST_WEBHOOK_URL` 后，系统发送如下 JSON：
 
@@ -403,9 +407,9 @@ EMAIL_TO=receiver@example.com
 
 Cookie 等同于登录凭据：不要发到聊天、Issue、日志或代码仓库。若已泄露，请立即退出微信读书登录并重新登录。
 
-## 16. 添加公众号
+## 13. 添加公众号
 
-### 16.1 推荐：从微信原文链接自动添加
+### 13.1 推荐：从微信原文链接自动添加
 
 普通用户直接打开管理中心，在“通过微信原文添加公众号”中粘贴任意一篇公开原文：
 
@@ -446,7 +450,7 @@ curl -X POST http://localhost:8765/api/accounts/from-article \
   -d '{"url":"https://mp.weixin.qq.com/s/ARTICLE_ID"}'
 ```
 
-### 16.2 RSS 来源
+### 13.2 RSS 来源
 
 ```bash
 curl -X POST http://localhost:8765/api/accounts \
@@ -455,7 +459,7 @@ curl -X POST http://localhost:8765/api/accounts \
   -d '{"name":"示例来源","connector":"rss","feed_url":"https://example.com/feed.xml"}'
 ```
 
-### 16.3 手工导入文章
+### 13.3 手工导入文章
 
 ```bash
 curl -X POST http://localhost:8765/api/import \
@@ -464,7 +468,7 @@ curl -X POST http://localhost:8765/api/import \
   -d '{"account_name":"示例公众号","url":"https://mp.weixin.qq.com/s/ARTICLE_ID","title":"文章标题"}'
 ```
 
-## 17. 配置项
+## 14. 配置项
 
 | 环境变量 | 默认值 | 作用 |
 |---|---:|---|
@@ -490,7 +494,7 @@ curl -X POST http://localhost:8765/api/import \
 | `WEREAD_CONTENT` | `false` | 是否额外获取正文 |
 | `REQUEST_TIMEOUT_SECONDS` | `20` | 外部请求超时 |
 
-## 18. API 与 RSS
+## 15. API 与 RSS
 
 - `GET /health`：服务和数据库状态
 - `GET /admin`：网页管理中心
@@ -509,7 +513,7 @@ curl -X POST http://localhost:8765/api/import \
 - `GET /feeds/all.xml`：全部订阅 RSS
 - `GET /feeds/{account_id}.xml`：单一订阅 RSS
 
-## 19. 数据、备份和升级
+## 16. 数据、备份和升级
 
 默认数据位于 `data/`：
 
@@ -527,41 +531,41 @@ docker compose pull
 docker compose up -d --build
 ```
 
-## 20. 测试
+## 17. 测试
 
 ```bash
 uv sync --extra dev
 uv run pytest -q
 ```
 
-## 21. 常见问题
+## 18. 常见问题
 
 更完整、按症状分类的处理步骤见 [TROUBLESHOOTING.zh-CN.md](TROUBLESHOOTING.zh-CN.md)。下面只保留最常见情况。
 
-### 21.1 返回 `401 LOGIN ERR`
+### 18.1 返回 `401 LOGIN ERR`
 
 `WEREAD_COOKIE` 缺失或过期。重新登录微信读书，从浏览器主域名请求中复制新 Cookie，在管理中心安全保存后重新检查。
 
-### 21.2 管理中心提示 401 或 503
+### 18.2 管理中心提示 401 或 503
 
 - `401`：浏览器里保存的令牌与 `.env` 中的 `ADMIN_TOKEN` 不一致，重新复制并保存。
 - `503`：仍在使用默认的 `ADMIN_TOKEN=change-me`。请改为随机长字符串并重启服务。
 
 如果刚移动、升级过项目，401 还可能表示旧目录中的 WePulse 仍占用 `8765` 端口。先从旧目录运行 `stop-wepulse.cmd`，再从当前目录运行 `start-wepulse.cmd`，然后把新复制到剪贴板的令牌重新粘贴到管理中心。不要把令牌发给任何人。
 
-### 21.3 微信读书接口返回 400
+### 18.3 微信读书接口返回 400
 
 先在管理中心重新保存完整 Cookie 并点击“检查 Cookie”。获取 Cookie 时必须选择主机名**恰好为** `weread.qq.com` 的请求；`https://oss.weread.qq.com/river/batch` 属于静态资源/批处理子域名，不应作为 Cookie 来源。如果所有订阅同时失败，通常是 Cookie、登录状态或上游接口变化；如果只有单个订阅失败，可用该公众号最新的公开原文链接重新添加验证。
 
-### 21.4 PowerShell 出现乱码并提示“字符串缺少终止符”
+### 18.4 PowerShell 出现乱码并提示“字符串缺少终止符”
 
 这通常不是命令写错，而是 `.ps1` 文件被旧版 Windows PowerShell 用错误编码读取。请重新下载当前发布包，不要用会改变编码的工具保存启动脚本；当前发布包的 PowerShell 文件应使用兼容 Windows PowerShell 5 的 UTF-8 BOM。详细恢复步骤见故障排查文档。
 
-### 21.5 创建 `.env` 时提示“访问被拒绝”
+### 18.5 创建 `.env` 时提示“访问被拒绝”
 
 当前账户没有项目目录的修改权限。优先把项目解压到自己拥有的 `D:\WePulse` 或 `F:\WePulse`，或者在文件夹“属性 → 安全 → 编辑”中为当前账户授予“修改”权限。不要通过长期使用管理员身份运行来掩盖权限配置问题。
 
-### 21.6 测试推送失败
+### 18.6 测试推送失败
 
 管理中心会显示各渠道返回结果。邮件失败时检查 SMTP 主机、端口、STARTTLS 和应用专用密码；企业微信失败时重新复制群机器人的完整 Webhook。修改 `.env` 后必须重启服务。
 
@@ -578,29 +582,29 @@ Docker 版执行：
 docker compose restart
 ```
 
-### 21.7 双击启动后页面打不开
+### 18.7 双击启动后页面打不开
 
 查看 `data/service.err.log`。常见原因是端口 `8765` 已被其他软件占用，或者首次下载 Python/依赖时网络中断。网络恢复后重新双击 `start-wepulse.cmd` 即可继续安装。若服务已经启动，脚本不会重复创建进程。
 
-### 21.8 开机自启动没有运行
+### 18.8 开机自启动没有运行
 
 打开 Windows“任务计划程序”，检查名为 `WePulse` 的任务。该任务在当前用户登录后启动，因此电脑必须开机并完成用户登录，06:00 定时摘要才能执行。项目目录不能在安装任务后移动；如果已经移动，请先运行 `remove-autostart.cmd`，再在新目录运行 `install-autostart.cmd`。
 
-### 21.9 订阅成功但没有新文章
+### 18.9 订阅成功但没有新文章
 
 - 先调用 `POST /api/accounts/{id}/collect`，再查看订阅的 `last_error`。
 - 微信读书的最新文章接口通常只返回最近一篇，应保持每 1～2 小时低频采集。
 - 如果一天只运行一次，公众号在两次运行之间连续发布时可能漏报。
 
-### 21.10 为什么不直接使用微信公众号官方 API
+### 18.10 为什么不直接使用微信公众号官方 API
 
 官方接口主要服务于已授权、由调用者管理的公众号，不提供读取任意第三方公众号文章列表的通用公共接口。因此本项目将采集层隔离为适配器，以便接口变化时替换，而不影响数据库、摘要、RSS 和 API。
 
-### 21.11 可以公开部署到互联网吗
+### 18.11 可以公开部署到互联网吗
 
 不建议直接暴露。至少应使用强 `ADMIN_TOKEN`、HTTPS、反向代理和防火墙，并限制访问来源。绝不能公开 `.env`、Cookie、数据库或日志。
 
-## 22. 项目结构
+## 19. 项目结构
 
 ```text
 src/wepulse/
@@ -622,10 +626,10 @@ remove-autostart.cmd      移除登录自启动任务
 start-docker.cmd          Windows Docker 启动（可选）
 ```
 
-## 23. 贡献
+## 20. 贡献
 
 请阅读 [CONTRIBUTING.md](CONTRIBUTING.md)。安全问题请按 [SECURITY.md](SECURITY.md) 私下报告，不要在公开 Issue 中提交 Cookie、令牌或数据库。
 
-## 24. License
+## 21. License
 
 [MIT](LICENSE)
