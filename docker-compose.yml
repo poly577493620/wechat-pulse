@@ -1,0 +1,12 @@
+services:
+  wepulse:
+    build: .
+    container_name: wepulse
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      DATA_DIR: /app/data
+    ports:
+      - "8765:8765"
+    volumes:
+      - ./data:/app/data
