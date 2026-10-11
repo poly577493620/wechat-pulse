@@ -630,6 +630,13 @@ start-docker.cmd          Windows Docker 启动（可选）
 
 请阅读 [CONTRIBUTING.md](CONTRIBUTING.md)。安全问题请按 [SECURITY.md](SECURITY.md) 私下报告，不要在公开 Issue 中提交 Cookie、令牌或数据库。
 
+### 20.1 联系方式
+
+- 维护联系邮箱：<577493620@qq.com>
+- 功能建议、使用反馈和普通问题优先通过 GitHub Issue 提交，便于公开跟踪和后续维护。
+- 涉及安全漏洞或不适合公开讨论的问题，可以发送邮件并注明 WePulse 版本、操作系统和复现步骤。
+- 无论通过 Issue 还是邮件联系，都不要发送 Cookie、`ADMIN_TOKEN`、`.env`、数据库、邮箱密码或包含个人信息的日志。
+
 ## 21. License
 
 [MIT](LICENSE)

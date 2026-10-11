@@ -14,7 +14,7 @@ If a cookie or token is exposed, revoke it immediately and create a replacement.
 
 ## Reporting a vulnerability
 
-Please report vulnerabilities privately to the repository maintainer. Include the affected version, reproduction steps, impact, and a minimal proof of concept. Do not include real user credentials or collected article data.
+Please report vulnerabilities privately to the repository maintainer at <577493620@qq.com>. Include the affected version, reproduction steps, impact, and a minimal proof of concept. Do not include real user credentials or collected article data.
 
 ## Deployment guidance
 
